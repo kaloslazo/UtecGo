@@ -20,6 +20,16 @@ public class QrCodeRecenter : MonoBehaviour {
     private Texture2D cameraImageTexture;
     private IBarcodeReader reader = new BarcodeReader(); // create a barcode reader instance
 
+    void Start()
+    {
+        // Leer la información del QR almacenada en PlayerPrefs
+        string qrCodeResult = PlayerPrefs.GetString("QrCodeResult", null);
+        if (!string.IsNullOrEmpty(qrCodeResult))
+        {
+            SetQrCodeRecenterTarget(qrCodeResult);
+        }
+    }
+
     private void Update() {
         if (Input.GetKeyDown(KeyCode.Space)) {
             SetQrCodeRecenterTarget("cocina");
@@ -92,9 +102,11 @@ public class QrCodeRecenter : MonoBehaviour {
         }
     }
 
-    private void SetQrCodeRecenterTarget(string targetText) {
+    private void SetQrCodeRecenterTarget(string targetText)
+    {
         Target currentTarget = navigationTargetObjects.Find(x => x.Name.ToLower().Equals(targetText.ToLower()));
-        if (currentTarget != null) {
+        if (currentTarget != null)
+        {
             // Reset position and rotation of ARSession
             session.Reset();
 
